@@ -441,4 +441,10 @@ runTests {
     expected  = "«foo»";
   };
 
+#FORMATS
+
+  testYAML = let input = { foo = "bar"; }; in {
+    expr = formats.yaml.generate input;
+    expected = builtins.toJSON input;
+  };
 }

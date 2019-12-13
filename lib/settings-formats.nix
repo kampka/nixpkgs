@@ -1,4 +1,4 @@
-{ lib }: {
+{ lib }: rec {
   /*
   Every entry in this file represents a format for configuration files of
   programs, used for `settings` options. Each entry has to look as follows:
@@ -28,6 +28,13 @@
       };
     in value;
     generate = builtins.toJSON;
+  };
+
+  # YAML has been a strict superset of JSON since 1.2
+  yaml = json // {
+    type = json.type // { 
+      description = "YAML value";
+    };
   };
 
   ini = {
