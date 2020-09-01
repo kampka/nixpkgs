@@ -11,7 +11,10 @@ stdenv.mkDerivation rec {
 
   outputs = [ "out" "dev" ];
 
-  nativeBuildInputs = [ pkgconfig gnum4 ];
+
+  #  While compiling, glibmm tries to execute glib-compile-schemas, which
+  #  requires glib to be in the nativeBuildInputs for cross-platform builds.
+  nativeBuildInputs = [ pkgconfig gnum4 glib ];
   buildInputs = stdenv.lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
     Cocoa
   ]);
