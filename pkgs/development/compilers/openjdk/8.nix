@@ -5,7 +5,7 @@
 , openjdk8-bootstrap
 , setJavaClassPath
 , headless ? false
-, enableGnome2 ? true, gtk2, gnome_vfs, glib, GConf
+, enableGnome2 ? false, gtk2, gnome_vfs, glib, GConf
 }:
 
 let
