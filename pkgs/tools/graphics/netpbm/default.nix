@@ -12,6 +12,7 @@
 , libtiff
 , enableX11 ? false
 , libX11
+, buildPackages
 }:
 
 stdenv.mkDerivation {
@@ -27,16 +28,44 @@ stdenv.mkDerivation {
     sha256 = "1m7ks6k53gsjsdazgf22g16dfgj3pqvqy9mhxzlwszv5808sj5w5";
   };
 
+  makeFlags = [
+    "CC=${stdenv.cc}/bin/${stdenv.cc.targetPrefix}cc"
+    "STRIPPROG=${stdenv.lib.getBin stdenv.cc.bintools.bintools}/bin/${stdenv.cc.targetPrefix}strip"
+  ];
+
   postPatch = ''
     # Install libnetpbm.so symlink to correct destination
     substituteInPlace lib/Makefile \
       --replace '/sharedlink' '/lib'
+  '' + (stdenv.lib.optionalString (stdenv.buildPlatform != stdenv.hostPlatform) ''
+      substituteInPlace buildtools/configure.pl \
+          --replace 'pkg-config' '${buildPackages.pkgconfig}/bin/${buildPackages.pkgconfig.targetPrefix}pkg-config'
+
+      substituteInPlace GNUmakefile \
+          --replace 'pkg-config' '${buildPackages.pkgconfig}/bin/${buildPackages.pkgconfig.targetPrefix}pkg-config'
+
+      substituteInPlace config.mk.in \
+          --replace 'AR = ar' 'AR = ${stdenv.lib.getBin stdenv.cc.bintools.bintools}/bin/${stdenv.cc.targetPrefix}ar'
+      substituteInPlace config.mk.in \
+          --replace 'RANLIB = ranlib' 'RANLIB = ${stdenv.lib.getBin stdenv.cc.bintools.bintools}/bin/${stdenv.cc.targetPrefix}ranlib'
+
+      substituteInPlace buildtools/install.sh \
+          --replace 'STRIPPROG-strip' 'STRIPPROG:-${stdenv.lib.getBin stdenv.cc.bintools.bintools}/bin/${stdenv.cc.targetPrefix}strip'
+    '');
+
+  preBuild = ''
+    pushd buildtools
+    make CC=${buildPackages.stdenv.cc}/bin/${buildPackages.stdenv.cc.targetPrefix}cc
+    popd
   '';
+
 
   nativeBuildInputs = [
     pkgconfig
     flex
     makeWrapper
+    libpng  # for libpng-config
+    libxml2 # for xml2-config
   ];
 
   buildInputs = [
