@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
   })];
 
   nativeBuildInputs = with perlPackages; [ perl XMLParser ];
-  propagatedBuildInputs = [ gettext ];
+  propagatedBuildInputs = [ gettext ] ++ (with perlPackages; [ perl XMLParser ]);
 
   postInstall = ''
     for f in $out/bin/*; do
