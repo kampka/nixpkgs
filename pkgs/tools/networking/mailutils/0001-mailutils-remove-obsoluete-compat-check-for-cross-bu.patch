@@ -1,0 +1,28 @@
+From d1146cfb0cf6a4290c176957cf2bff00c37f8ff0 Mon Sep 17 00:00:00 2001
+From: Christian Kampka <christian@kampka.net>
+Date: Mon, 7 Sep 2020 23:39:06 +0200
+Subject: [PATCH] mailutils: remove obsoluete compat check for cross-build
+
+---
+ configure.ac | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index fa5baa031..68861fc8d 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -744,11 +744,6 @@ if test "$use_fribidi" = "yes"; then
+                  [AC_DEFINE(HAVE_LIBFRIBIDI,1)
+                   FRIBIDI_LIBS=-lfribidi],
+                  [use_fribidi=no])
+-
+-    AC_RUN_IFELSE([AC_LANG_PROGRAM([#include <fribidi/fribidi.h>],
+-                                  [FriBidiCharSet s = FRIBIDI_CHARSET_CAP_RTL;])],
+-                  [AC_DEFINE(HAVE_FRIBIDI_CHARSET_CAP_RTL)])
+-                 
+   else
+     use_fribidi=no
+   fi
+-- 
+2.25.4
+

@@ -35,6 +35,7 @@ stdenv.mkDerivation rec {
   patches = [
     ./fix-build-mb-len-max.patch
     ./path-to-cat.patch
+    ./0001-mailutils-remove-obsoluete-compat-check-for-cross-bu.patch
   ];
 
   enableParallelBuilding = false;
