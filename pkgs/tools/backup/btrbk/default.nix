@@ -1,5 +1,5 @@
 { stdenv, fetchurl, coreutils, bash, btrfs-progs, openssh, perl, perlPackages
-, utillinux, asciidoc, asciidoctor, mbuffer, makeWrapper }:
+, utillinux, mbuffer, makeWrapper, buildPackages, ... }:
 
 stdenv.mkDerivation rec {
   pname = "btrbk";
@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
     sha256 = "153inyvvnl17hq1w3nsa783havznaykdam2yrj775bmi2wg6fvwn";
   };
 
-  nativeBuildInputs = [ asciidoc asciidoctor makeWrapper ];
+  nativeBuildInputs = [ buildPackages.asciidoc buildPackages.asciidoctor makeWrapper ];
 
   buildInputs = with perlPackages; [ perl DateCalc ];
 
