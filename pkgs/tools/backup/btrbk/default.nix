@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ buildPackages.asciidoc buildPackages.asciidoctor makeWrapper ];
 
-  buildInputs = with perlPackages; [ perl DateCalc ];
+  buildInputs = with perlPackages; [ perl DateCalc bash ];
 
   preInstall = ''
     for f in $(find . -name Makefile); do
@@ -39,6 +39,7 @@ stdenv.mkDerivation rec {
     wrapProgram $out/sbin/btrbk \
       --set PERL5LIB $PERL5LIB \
       --prefix PATH ':' "${stdenv.lib.makeBinPath [ btrfs-progs bash mbuffer openssh ]}"
+    substituteInPlace $out/sbin/btrbk --replace "${buildPackages.bash}" "${bash}"
   '';
 
   meta = with stdenv.lib; {
