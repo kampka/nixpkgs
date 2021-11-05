@@ -1,5 +1,6 @@
 { stdenv, lib, buildPackages
-, autoreconfHook, bison, texinfo, fetchurl, perl, xz, libiconv, gmp ? null
+, autoreconfHook
+, bison, texinfo, fetchurl, perl, xz, libiconv, gmp ? null
 , aclSupport ? stdenv.isLinux, acl ? null
 , attrSupport ? stdenv.isLinux, attr ? null
 , selinuxSupport? false, libselinux ? null, libsepol ? null
